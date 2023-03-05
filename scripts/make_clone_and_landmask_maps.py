@@ -127,11 +127,16 @@ def main():
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     
     # option to use only cells that have 'complete' upstream areas 
-    bounding_box_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map) 
     # - define ldd at bounding box only
     ldd_map_at_bounding_box = pcr.lddrepair(pcr.lddmask(ldd_map, bounding_box))
-    ldd_map_at_bounding_box_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box)
-    bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == bounding_box_catchment_size
+    # - catchment classes at bounding box only
+    ldd_map_at_bounding_box_catchment = pcr.catchment(ldd_map_at_bounding_box, pit(ldd_map_at_bounding_box))
+    ldd_map_at_bounding_box_catchment = pcr.ifthen(pcr.scalar(ldd_map_at_bounding_box_catchment > 0, ldd_map_at_bounding_box_catchment))
+    ldd_map_at_bounding_box_catchment_size = pcr.areamaximum(pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box), ldd_map_at_bounding_box_catchment)
+    # - correct catchment size 
+    ldd_map_catchment_size = pcr.areamaximum(pcr.catchmenttotal(pcr.scalar(1.0), ldd_map), ldd_map_at_bounding_box_catchment)
+    # - bounding box used 
+    bounding_box_catchment = ldd_map_at_bounding_box_catchment_size = ldd_map_catchment_size
     pcr.report(bounding_box_catchment, out_mask_file)
 
 
