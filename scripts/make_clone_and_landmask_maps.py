@@ -130,7 +130,7 @@ def main():
     # TODO: option to use only cells that have 'complete' upstream areas 
     
     # checking using aguila
-    cmd = "aguila " +  out_mask_file + " + 6" + global_ldd_inp_file
+    cmd = "aguila " +  out_mask_file + " + " + global_ldd_inp_file
     print(cmd)
     os.system(cmd) 
     
