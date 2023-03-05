@@ -116,10 +116,10 @@ def main():
     # create the bounding box
     print("create the bounding box") 
     bounding_box = pcr.boolean(1.0)
-    bounding_box = pcr.ifthen(pcr.xcoordinate(bounding_box) ge xmin, bounding_box)
-    bounding_box = pcr.ifthen(pcr.ycoordinate(bounding_box) ge ymin, bounding_box)
-    bounding_box = pcr.ifthen(pcr.xcoordinate(bounding_box) le xmax, bounding_box)
-    bounding_box = pcr.ifthen(pcr.ycoordinate(bounding_box) le ymax, bounding_box)
+    bounding_box = pcr.ifthen(pcr.xcoordinate(bounding_box) >= xmin, bounding_box)
+    bounding_box = pcr.ifthen(pcr.ycoordinate(bounding_box) >= ymin, bounding_box)
+    bounding_box = pcr.ifthen(pcr.xcoordinate(bounding_box) <= xmax, bounding_box)
+    bounding_box = pcr.ifthen(pcr.ycoordinate(bounding_box) <= ymax, bounding_box)
     
     # include the catchment map of the bounding box
     print("include upstream areas of the bounding box") 
