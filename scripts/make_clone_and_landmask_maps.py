@@ -62,10 +62,10 @@ def define_landmask(input_file, clone_map_file, output_map_file):
 
 # bounding box extent (-te xmin ymin xmax ymax)
 # - thailand: latitudes: 4-22 and longitudes: 95-107
-xmin =  95.
-ymin =   4.
-xmax = 107.
-ymax =  22.
+xmin =  97.
+ymin =   5.
+xmax = 106.
+ymax =  21.
 
 # ldd file
 global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX.map"
@@ -124,10 +124,13 @@ def main():
     # include the catchment map of the bounding box
     print("include upstream areas of the bounding box") 
     bounding_box_catchment = pcr.catchment(ldd_map, bounding_box)
+    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     pcr.report(bounding_box_catchment, out_mask_file)
     
+    # TODO: option to use only cells that have 'complete' upstream areas 
+    
     # checking using aguila
-    cmd = "aguila " +  out_mask_file + " " + global_ldd_inp_file
+    cmd = "aguila " +  out_mask_file + " + 6" + global_ldd_inp_file
     print(cmd)
     os.system(cmd) 
     
