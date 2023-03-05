@@ -103,8 +103,8 @@ def main():
     print("set the clone based on the ldd input") 
     pcr.setclone(global_ldd_inp_file)
 
-    # set/read ldd
-    print("set/read the ldd") 
+    # read ldd
+    print("read the ldd") 
     ldd_map = pcr.readmap(global_ldd_inp_file)
 
     # ~ # - extend ldd (not needed)
@@ -126,14 +126,15 @@ def main():
     bounding_box_catchment = pcr.catchment(ldd_map, bounding_box)
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     
-    # option to use only cells that have 'complete' upstream areas 
+    # option to use only cells that have 'complete' catchments 
     # - define ldd at bounding box only
     ldd_map_at_bounding_box = pcr.lddrepair(pcr.lddmask(ldd_map, bounding_box))
-    # - catchment classes at bounding box only
-    ldd_map_at_bounding_box_catchment = pcr.catchment(ldd_map_at_bounding_box, pit(ldd_map_at_bounding_box))
+    # - catchment classes (at bounding box only)
+    ldd_map_at_bounding_box_catchment = pcr.catchment(ldd_map_at_bounding_box, pcr.pit(ldd_map_at_bounding_box))
     ldd_map_at_bounding_box_catchment = pcr.ifthen(pcr.scalar(ldd_map_at_bounding_box_catchment > 0, ldd_map_at_bounding_box_catchment))
+    # - catchment sizes (at bounding box only)
     ldd_map_at_bounding_box_catchment_size = pcr.areamaximum(pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box), ldd_map_at_bounding_box_catchment)
-    # - correct catchment size 
+    # - correct catchment sizes (based on the global ldd) 
     ldd_map_catchment_size = pcr.areamaximum(pcr.catchmenttotal(pcr.scalar(1.0), ldd_map), ldd_map_at_bounding_box_catchment)
     # - bounding box used 
     bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
