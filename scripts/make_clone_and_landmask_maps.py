@@ -77,6 +77,10 @@ out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/"
 out_clone_file = "clone_thailand.map"
 out_mask_file  =  "mask_thailand.map"
 
+# output files in a full path
+out_clone_file = out_folder + "/" + out_clone_file
+out_mask_file  = out_folder + "/" + out_mask_file
+
 def main():
 
     # output folder
@@ -94,10 +98,6 @@ def main():
     tmp_folder = out_folder + "/tmp/"
     if os.path.exists(tmp_folder): shutil.rmtree(tmp_folder)
     os.makedirs(tmp_folder)
-    
-    # output files in a full path
-    out_clone_file = out_folder + "/" + out_clone_file
-    out_mask_file  = out_folder + "/" + out_mask_file
     
     # set the clone map
     print("set the clone based on the ldd input") 
