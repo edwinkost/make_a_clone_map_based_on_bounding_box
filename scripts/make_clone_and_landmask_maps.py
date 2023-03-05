@@ -68,7 +68,7 @@ xmax = 107.
 ymax =  22.
 
 # ldd file
-global_ldd_inp_file = ""
+global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX_correct_lat.nc"
 
 # output folder
 out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/"
