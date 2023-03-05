@@ -136,7 +136,7 @@ def main():
     # - correct catchment size 
     ldd_map_catchment_size = pcr.areamaximum(pcr.catchmenttotal(pcr.scalar(1.0), ldd_map), ldd_map_at_bounding_box_catchment)
     # - bounding box used 
-    bounding_box_catchment = ldd_map_at_bounding_box_catchment_size = ldd_map_catchment_size
+    bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
     pcr.report(bounding_box_catchment, out_mask_file)
 
 
