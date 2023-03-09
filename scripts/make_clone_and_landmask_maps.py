@@ -125,6 +125,7 @@ def main():
     print("include upstream areas of the bounding box") 
     bounding_box_catchment = pcr.catchment(ldd_map, bounding_box)
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
+    pcr.report(bounding_box_catchment, out_mask_file)
     
     # option to use only cells that have 'complete' catchments (TODO: make this optional)
     print("using only cells that have complete catchments") 
@@ -139,9 +140,17 @@ def main():
     ldd_map_catchment_size = pcr.areamaximum(pcr.catchmenttotal(pcr.scalar(1.0), ldd_map), ldd_map_at_bounding_box_catchment)
     # - bounding box used 
     bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
+    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     pcr.report(bounding_box_catchment, out_mask_file)
 
-
+    # option to use only the largest clump
+    print("using only the largest clump") 
+    clump_ids   = pcr.clump(bounding_box_catchment)
+    clump_areas = pcr.areatotal(pcr.scalar(1.0), clump_ids)
+    bounding_box_catchment = pcr.ifthen(clump_areas == pcr.areamaximum(clump_areas), pcr.boolean(1.0))
+    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
+    pcr.report(bounding_box_catchment, out_mask_file)
+    
     # checking using aguila
     cmd = "aguila " +  out_mask_file + " + " + global_ldd_inp_file
     print(cmd)
