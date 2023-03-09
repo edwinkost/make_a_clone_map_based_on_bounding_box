@@ -146,7 +146,7 @@ def main():
     # option to use only the largest clump
     print("using only the largest clump") 
     clump_ids   = pcr.clump(bounding_box_catchment)
-    clump_areas = pcr.areatotal(pcr.scalar(1.0), clump_ids)
+    clump_areas = pcr.areatotal(pcr.scalar(bounding_box_catchment), clump_ids)
     bounding_box_catchment = pcr.ifthen(clump_areas == pcr.areamaximum(clump_areas), pcr.boolean(1.0))
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     pcr.report(bounding_box_catchment, out_mask_file)
