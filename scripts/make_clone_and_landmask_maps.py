@@ -71,7 +71,7 @@ ymax =  22. #  21.
 global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX.map"
 
 # output folder
-out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/"
+out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/version_20220310_including_mekong/"
 
 # output files
 out_clone_file = "clone_thailand.map"
@@ -127,38 +127,38 @@ def main():
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     pcr.report(bounding_box_catchment, out_mask_file)
     
-    # option to use only cells that have either 'complete' catchments or 'complete/correct' upstream areas (TODO: make this optional)
-    print("using only cells that have either 'complete' catchments or 'complete/correct' upstream areas") 
-    #
-    # - define ldd at bounding box only
-    ldd_map_at_bounding_box = pcr.lddrepair(pcr.lddmask(ldd_map, bounding_box))
-    #
-    # - catchment/upstream area sizes (at bounding box only)
-    ldd_map_at_bounding_box_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box)
+    # ~ # option to use only cells that have either 'complete' catchments or 'complete/correct' upstream areas (TODO: make this optional)
+    # ~ print("using only cells that have either 'complete' catchments or 'complete/correct' upstream areas") 
+    # ~ #
+    # ~ # - define ldd at bounding box only
+    # ~ ldd_map_at_bounding_box = pcr.lddrepair(pcr.lddmask(ldd_map, bounding_box))
+    # ~ #
+    # ~ # - catchment/upstream area sizes (at bounding box only)
+    # ~ ldd_map_at_bounding_box_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box)
     # ~ # -- if complete catchments are preferred
     # ~ # --- catchment classes (at bounding box only)
     # ~ ldd_map_at_bounding_box_catchment = pcr.catchment(ldd_map_at_bounding_box, pcr.pit(ldd_map_at_bounding_box))
     # ~ ldd_map_at_bounding_box_catchment = pcr.ifthen(pcr.scalar(ldd_map_at_bounding_box_catchment) > 0.0, ldd_map_at_bounding_box_catchment)
     # ~ # --- complete catchment size (at bounding box only)
     # ~ ldd_map_at_bounding_box_catchment_size = pcr.areamaximum(ldd_map_at_bounding_box_catchment_size, ldd_map_at_bounding_box_catchment)
-    #
-    # - correct catchment sizes (based on the global ldd) 
-    ldd_map_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map)
+    # ~ #
+    # ~ # - correct catchment sizes (based on the global ldd) 
+    # ~ ldd_map_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map)
     # ~ # -- if complete catchments are preferred
     # ~ ldd_map_catchment_size = pcr.areamaximum(ldd_map_catchment_size, ldd_map_at_bounding_box_catchment)
     #
-    # - bounding box used 
-    bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
-    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
-    pcr.report(bounding_box_catchment, out_mask_file)
+    # ~ # - bounding box used 
+    # ~ bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
+    # ~ bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
+    # ~ pcr.report(bounding_box_catchment, out_mask_file)
 
-    # option to use only the largest clump
-    print("using only the largest clump") 
-    clump_ids   = pcr.clump(bounding_box_catchment)
-    clump_areas = pcr.areatotal(pcr.scalar(bounding_box_catchment), clump_ids)
-    bounding_box_catchment = pcr.ifthen(clump_areas == pcr.mapmaximum(clump_areas), pcr.boolean(1.0))
-    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
-    pcr.report(bounding_box_catchment, out_mask_file)
+    # ~ # option to use only the largest clump
+    # ~ print("using only the largest clump") 
+    # ~ clump_ids   = pcr.clump(bounding_box_catchment)
+    # ~ clump_areas = pcr.areatotal(pcr.scalar(bounding_box_catchment), clump_ids)
+    # ~ bounding_box_catchment = pcr.ifthen(clump_areas == pcr.mapmaximum(clump_areas), pcr.boolean(1.0))
+    # ~ bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
+    # ~ pcr.report(bounding_box_catchment, out_mask_file)
     
     # checking using aguila
     cmd = "aguila " +  out_mask_file + " + " + global_ldd_inp_file
@@ -177,15 +177,15 @@ def main():
     cmd = "mapattr -s -R %s -C %s -B -P yb2t -x %s -y %s -l %s %s" %(str(num_rows), str(num_cols), str(xmin), str(ymax), str(cellsize), clonemap_mask_file)
     print(cmd); os.system(cmd)
         
-    # ~ # set the local landmask for the clump
-    # ~ pcr.setclone(clonemap_mask_file)
-    # ~ local_mask = vos.readPCRmapClone(v = out_mask_file, \
-                                         # ~ cloneMapFileName = clonemap_mask_file, 
-                                         # ~ tmpDir = tmp_folder, \
-                                         # ~ absolutePath = None, isLddMap = False, cover = None, isNomMap = True)
-    # ~ local_mask_boolean = pcr.defined(local_mask)
-    # ~ local_mask_boolean = pcr.ifthen(local_mask_boolean, local_mask_boolean)
-    # ~ pcr.report(local_mask_boolean, out_mask_file)
+    # set the local landmask for the clump
+    pcr.setclone(clonemap_mask_file)
+    local_mask = vos.readPCRmapClone(v = out_mask_file, \
+                                         cloneMapFileName = clonemap_mask_file, 
+                                         tmpDir = tmp_folder, \
+                                         absolutePath = None, isLddMap = False, cover = None, isNomMap = False)
+    local_mask_boolean = pcr.defined(local_mask)
+    local_mask_boolean = pcr.ifthen(local_mask_boolean, local_mask_boolean)
+    pcr.report(local_mask_boolean, out_mask_file)
 
         
 if __name__ == '__main__':
