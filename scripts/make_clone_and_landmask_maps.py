@@ -62,10 +62,10 @@ def define_landmask(input_file, clone_map_file, output_map_file):
 
 # bounding box extent (-te xmin ymin xmax ymax)
 # - thailand: latitudes: 4-22 and longitudes: 95-107
-xmin =  95. #  95. #  95. #  97.
-ymin =   4. #   4. #   4. #   5.
-xmax = 107. # 110. # 107. # 106.
-ymax =  22. #  22. #  22. #  21.
+xmin =  97. #  95. #  95. #  95. #  97.
+ymin =   5. #   4. #   4. #   4. #   5.
+xmax = 106. # 107. # 110. # 107. # 106.
+ymax =  21. #  22. #  22. #  22. #  21.
 
 # ldd file
 global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX.map"
