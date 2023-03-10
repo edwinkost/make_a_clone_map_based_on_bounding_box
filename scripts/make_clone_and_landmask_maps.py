@@ -174,9 +174,9 @@ def main():
     
     # make the clone map using mapattr 
     clonemap_mask_file = out_clone_file
-    cmd = "mapattr -s -R %s -C %s -B -P yb2t -x %s -y %s -l %s %s" %(str(num_rows), str(num_cols), str(xmin), str(ymax), str(cellsize), clonemap_mask_file)
+    cmd = "mapattr -s -R %s -C %s -B -P yb2t -x %s -y %s -l %s %s" %(str(num_rows), str(num_cols), str(xmin_clone), str(ymax_clone), str(cellsize), clonemap_mask_file)
     print(cmd); os.system(cmd)
-        
+
     # set the local landmask for the clump
     pcr.setclone(clonemap_mask_file)
     local_mask = vos.readPCRmapClone(v = out_mask_file, \
