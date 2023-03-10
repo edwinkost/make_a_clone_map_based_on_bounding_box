@@ -62,10 +62,10 @@ def define_landmask(input_file, clone_map_file, output_map_file):
 
 # bounding box extent (-te xmin ymin xmax ymax)
 # - thailand: latitudes: 4-22 and longitudes: 95-107
-xmin =  97. #  95. #  97.
-ymin =   5. #   4. #   5.
-xmax = 106. # 107. # 106.
-ymax =  21. #  22. #  21.
+xmin =  95. #  97.
+ymin =   4. #   5.
+xmax = 107. # 106.
+ymax =  22. #  21.
 
 # ldd file
 global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX.map"
@@ -168,15 +168,15 @@ def main():
     cmd = "mapattr -s -R %s -C %s -B -P yb2t -x %s -y %s -l %s %s" %(str(num_rows), str(num_cols), str(xmin), str(ymax), str(cellsize), clonemap_mask_file)
     print(cmd); os.system(cmd)
         
-    # set the local landmask for the clump
-    pcr.setclone(clonemap_mask_file)
-    local_mask = vos.readPCRmapClone(v = out_mask_file, \
-                                         cloneMapFileName = clonemap_mask_file, 
-                                         tmpDir = tmp_folder, \
-                                         absolutePath = None, isLddMap = False, cover = None, isNomMap = True)
-    local_mask_boolean = pcr.defined(local_mask)
-    local_mask_boolean = pcr.ifthen(local_mask_boolean, local_mask_boolean)
-    pcr.report(local_mask_boolean, out_mask_file)
+    # ~ # set the local landmask for the clump
+    # ~ pcr.setclone(clonemap_mask_file)
+    # ~ local_mask = vos.readPCRmapClone(v = out_mask_file, \
+                                         # ~ cloneMapFileName = clonemap_mask_file, 
+                                         # ~ tmpDir = tmp_folder, \
+                                         # ~ absolutePath = None, isLddMap = False, cover = None, isNomMap = True)
+    # ~ local_mask_boolean = pcr.defined(local_mask)
+    # ~ local_mask_boolean = pcr.ifthen(local_mask_boolean, local_mask_boolean)
+    # ~ pcr.report(local_mask_boolean, out_mask_file)
 
         
 if __name__ == '__main__':
