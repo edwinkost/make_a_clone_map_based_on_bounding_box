@@ -62,16 +62,16 @@ def define_landmask(input_file, clone_map_file, output_map_file):
 
 # bounding box extent (-te xmin ymin xmax ymax)
 # - thailand: latitudes: 4-22 and longitudes: 95-107
-xmin =  95. #  97.
-ymin =   4. #   5.
-xmax = 107. # 106.
-ymax =  22. #  21.
+xmin =  95. #  95. #  95. #  97.
+ymin =   4. #   4. #   4. #   5.
+xmax = 107. # 110. # 107. # 106.
+ymax =  22. #  22. #  22. #  21.
 
 # ldd file
 global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX.map"
 
 # output folder
-out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/version_20220310_including_mekong/"
+out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/version_20220310/"
 
 # output files
 out_clone_file = "clone_thailand.map"
@@ -125,41 +125,41 @@ def main():
     print("include upstream areas of the bounding box") 
     bounding_box_catchment = pcr.catchment(ldd_map, bounding_box)
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
-    pcr.report(pcr.scalar(bounding_box_catchment), out_mask_file)
     
-    # ~ # option to use only cells that have either 'complete' catchments or 'complete/correct' upstream areas (TODO: make this optional)
-    # ~ print("using only cells that have either 'complete' catchments or 'complete/correct' upstream areas") 
-    # ~ #
-    # ~ # - define ldd at bounding box only
-    # ~ ldd_map_at_bounding_box = pcr.lddrepair(pcr.lddmask(ldd_map, bounding_box))
-    # ~ #
-    # ~ # - catchment/upstream area sizes (at bounding box only)
-    # ~ ldd_map_at_bounding_box_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box)
-    # ~ # -- if complete catchments are preferred
-    # ~ # --- catchment classes (at bounding box only)
-    # ~ ldd_map_at_bounding_box_catchment = pcr.catchment(ldd_map_at_bounding_box, pcr.pit(ldd_map_at_bounding_box))
-    # ~ ldd_map_at_bounding_box_catchment = pcr.ifthen(pcr.scalar(ldd_map_at_bounding_box_catchment) > 0.0, ldd_map_at_bounding_box_catchment)
-    # ~ # --- complete catchment size (at bounding box only)
-    # ~ ldd_map_at_bounding_box_catchment_size = pcr.areamaximum(ldd_map_at_bounding_box_catchment_size, ldd_map_at_bounding_box_catchment)
-    # ~ #
-    # ~ # - correct catchment sizes (based on the global ldd) 
-    # ~ ldd_map_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map)
-    # ~ # -- if complete catchments are preferred
-    # ~ ldd_map_catchment_size = pcr.areamaximum(ldd_map_catchment_size, ldd_map_at_bounding_box_catchment)
+    # option to use only cells that have either 'complete' catchments or 'complete/correct' upstream areas (TODO: make this optional)
+    print("using only cells that have either 'complete' catchments or 'complete/correct' upstream areas") 
     #
-    # ~ # - bounding box used 
-    # ~ bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
-    # ~ bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
-    # ~ pcr.report(bounding_box_catchment, out_mask_file)
+    # - define ldd at bounding box only
+    ldd_map_at_bounding_box = pcr.lddrepair(pcr.lddmask(ldd_map, bounding_box))
+    #
+    # - catchment/upstream area sizes (at bounding box only)
+    ldd_map_at_bounding_box_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map_at_bounding_box)
+    # -- if complete catchments are preferred
+    # --- catchment classes (at bounding box only)
+    ldd_map_at_bounding_box_catchment = pcr.catchment(ldd_map_at_bounding_box, pcr.pit(ldd_map_at_bounding_box))
+    ldd_map_at_bounding_box_catchment = pcr.ifthen(pcr.scalar(ldd_map_at_bounding_box_catchment) > 0.0, ldd_map_at_bounding_box_catchment)
+    # --- complete catchment size (at bounding box only)
+    ldd_map_at_bounding_box_catchment_size = pcr.areamaximum(ldd_map_at_bounding_box_catchment_size, ldd_map_at_bounding_box_catchment)
+    #
+    # - correct catchment sizes (based on the global ldd) 
+    ldd_map_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map)
+    # -- if complete catchments are preferred
+    ldd_map_catchment_size = pcr.areamaximum(ldd_map_catchment_size, ldd_map_at_bounding_box_catchment)
+    # ~ #
+    # - bounding box used 
+    bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
+    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
 
-    # ~ # option to use only the largest clump
-    # ~ print("using only the largest clump") 
-    # ~ clump_ids   = pcr.clump(bounding_box_catchment)
-    # ~ clump_areas = pcr.areatotal(pcr.scalar(bounding_box_catchment), clump_ids)
-    # ~ bounding_box_catchment = pcr.ifthen(clump_areas == pcr.mapmaximum(clump_areas), pcr.boolean(1.0))
-    # ~ bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
-    # ~ pcr.report(bounding_box_catchment, out_mask_file)
+    # option to use only the largest clump
+    print("using only the largest clump") 
+    clump_ids   = pcr.clump(bounding_box_catchment)
+    clump_areas = pcr.areatotal(pcr.scalar(bounding_box_catchment), clump_ids)
+    bounding_box_catchment = pcr.ifthen(clump_areas == pcr.mapmaximum(clump_areas), pcr.boolean(1.0))
+    bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
     
+    # report the bounding_box_catchment as a scalar map
+    pcr.report(pcr.scalar(bounding_box_catchment), out_mask_file)
+
     # checking using aguila
     cmd = "aguila " +  out_mask_file + " + " + global_ldd_inp_file
     print(cmd)
