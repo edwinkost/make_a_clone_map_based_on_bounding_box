@@ -144,7 +144,9 @@ def main():
     #
     # - correct catchment sizes (based on the global ldd) 
     ldd_map_catchment_size = pcr.catchmenttotal(pcr.scalar(1.0), ldd_map)
+    # ~ # -- if complete catchments are preferred
     # ~ ldd_map_catchment_size = pcr.areamaximum(ldd_map_catchment_size, ldd_map_at_bounding_box_catchment)
+    #
     # - bounding box used 
     bounding_box_catchment = ldd_map_at_bounding_box_catchment_size == ldd_map_catchment_size
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
