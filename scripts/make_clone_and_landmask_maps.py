@@ -71,7 +71,7 @@ ymax =  21. #  22. #  22. #  22. #  21.
 global_ldd_inp_file = "/scratch/depfg/sutan101/data/pcrglobwb_input_arise/develop/global_30sec/routing/surface_water_bodies/version_2020-05-XX/lddsound_30sec_version_202005XX.map"
 
 # output folder
-out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/version_20220310/"
+out_folder = "/scratch/depfg/sutan101/thailand_30sec/clone_maps/version_20230310/"
 
 # output files
 out_clone_file = "clone_thailand.map"
