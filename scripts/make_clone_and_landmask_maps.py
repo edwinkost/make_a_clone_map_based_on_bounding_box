@@ -125,7 +125,7 @@ def main():
     print("include upstream areas of the bounding box") 
     bounding_box_catchment = pcr.catchment(ldd_map, bounding_box)
     bounding_box_catchment = pcr.ifthen(bounding_box_catchment, bounding_box_catchment)
-    pcr.report(bounding_box_catchment, out_mask_file)
+    pcr.report(pcr.scalar(bounding_box_catchment), out_mask_file)
     
     # ~ # option to use only cells that have either 'complete' catchments or 'complete/correct' upstream areas (TODO: make this optional)
     # ~ print("using only cells that have either 'complete' catchments or 'complete/correct' upstream areas") 
